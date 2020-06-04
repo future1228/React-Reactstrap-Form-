@@ -1,0 +1,15 @@
+form {
+    width: 500px;
+    background-color: #f9f9f9;
+    padding: 30px;
+}
+.container{
+    height: 150vh;
+}
+h4{
+    border-bottom: 1px solid #d9d9d9;
+}
+p{
+    font-size: 13px;
+    margin-bottom: 0px !important;
+}
