@@ -1,18 +1,28 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Button, FormGroup, Label} from 'reactstrap';
+import { Button, FormGroup, Label, Input, Col} from 'reactstrap';
 import './form.css';
 
+const AddField = (props) => {
+    return(
+        <>
+            <AvGroup>
+                <Label for="title">{props.label}</Label>
+                <AvInput type="text" name="title" id="title" required />
+                <AvFeedback>This field is invalid!</AvFeedback>
+            </AvGroup>
+        </>
+    )
+}
+
 export function PartInfo(props) {
-    // const [title, setTitle] = useState("");
-    // const [nucleotide, setNucleotide] = useState("");
-    // const [detail, setDetail] = useState("");
-    // const [secret, setSecret] = useState("");
-    // const [organism, setOrganism] = useState("");
-    // const [codon, setCodon] = useState("");
-    // const [price, setPrice] = useState("");
-    // const [error, setError] = useState(false);
     const [rbsInfo, setRbsinfo] = useState(false);
+    const [addField, setAddField] = useState([]);
+    const [label, setLabel] = useState();
+
+    useEffect(() => {
+        setAddField(addField)
+    })
 
     const handleValidSubmit = (event, values) => {
         console.log(values);
@@ -23,20 +33,16 @@ export function PartInfo(props) {
         if(values == 'RBS')
             setRbsinfo(true);
     }
-    
-    // const handleInvalidSubmit = (event, errors, values) => {
-        // setTitle(values.title);
-        // setNucleotide(values.nucleotide);
-        // setDetail(values.detail);
-        // setSecret(values.secret);
-        // setOrganism(values.organism);
-        // setCodon(values.codon);
-        // setPrice(values.price);
-        // setError(true);
-    // }
 
+    function handleAddField() {
+        let addId = addField.length + 1
+        setAddField([...addField, {id: addId}])
+    }
+
+    const handleTitleChange = (event) => {
+        setLabel(event.target.value);
+    }
     return (
-        <>
         <div className="container">
             <div className="d-flex justify-content-center align-items-center h-100">
                 <AvForm onValidSubmit={handleValidSubmit}>
@@ -108,13 +114,23 @@ export function PartInfo(props) {
                         <Label for="rbs">RBS Strength</Label>
                         <AvInput type="text" name="rbs" id="rbs" />
                     </AvGroup>
+                    {addField.map(addfield =><AddField key={addfield.id} label={label} />)}
 
+                    <FormGroup row>
+                        <Label for="exampleEmail" md={2}>Label :</Label>
+                        <Col md={7}>
+                            <Input type="text" name="label" placeholder="Type new label" onChange={(e) => handleTitleChange(e)} />
+                        </Col>
+                        <Col md={3}>
+                        <Button type="button" color="primary" className="mb-4" onClick={handleAddField}>+</Button>
+                        </Col>
+                    </FormGroup>
+                    
                     <p>By submitting, you agree to the <a href="">Strandbase Terms of Use.</a></p>
-                    <Button type="submit" outline color="primary">Submit</Button>
+                    <Button type="submit" outline color="primary" className="mt-1">Submit</Button>
                 </AvForm>
             </div>                
         </div>
-        </>
     );
 }
 
