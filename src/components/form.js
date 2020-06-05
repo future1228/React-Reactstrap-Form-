@@ -12,9 +12,16 @@ export function PartInfo(props) {
     // const [codon, setCodon] = useState("");
     // const [price, setPrice] = useState("");
     // const [error, setError] = useState(false);
+    const [rbsInfo, setRbsinfo] = useState(false);
 
     const handleValidSubmit = (event, values) => {
         console.log(values);
+    }
+
+    const handlePartType = (event, values) => {
+        console.log(values);
+        if(values == 'RBS')
+            setRbsinfo(true);
     }
     
     // const handleInvalidSubmit = (event, errors, values) => {
@@ -43,12 +50,14 @@ export function PartInfo(props) {
                     </AvGroup>
                     <AvGroup>
                         <Label for="partType">Part type*</Label>
-                        <AvField type="select" name="partType" id="partType" required>
+                        <AvField type="select" name="partType" id="partType" onChange={handlePartType} required>
                             <option>Other</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option>promoter</option>
+                            <option>monoclonal antibody</option>
+                            <option>domain</option>
+                            <option>enzyme</option>
+                            <option>reporter</option>
+                            <option>RBS</option>
                         </AvField>
                     </AvGroup>
                     <AvGroup>
@@ -95,7 +104,7 @@ export function PartInfo(props) {
                         <AvInput type="number" name="price" id="price" placeholder="50.0" min="1" required/>
                         <AvFeedback>This field is invalid!</AvFeedback>
                     </AvGroup>
-                    <AvGroup>
+                    <AvGroup style={{ display: rbsInfo ? "block" : "none" }}>
                         <Label for="rbs">RBS Strength</Label>
                         <AvInput type="text" name="rbs" id="rbs" />
                     </AvGroup>
