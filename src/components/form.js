@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Button, FormGroup, Label, Input, Col} from 'reactstrap';
+import { Button, FormGroup, Label, Input, Col, Row, FontAwesomeIcon} from 'reactstrap';
 import './form.css';
 
 const AddField = (props) => {
     return(
         <>
             <AvGroup>
-                <Label for="title">{props.label}</Label>
+                {/* <Label for="title">{props.label}</Label> */}
                 <AvInput type="text" name="title" id="title" required />
                 <AvFeedback>This field is invalid!</AvFeedback>
             </AvGroup>
@@ -16,9 +16,9 @@ const AddField = (props) => {
 }
 
 export function PartInfo(props) {
-    const [rbsInfo, setRbsinfo] = useState(false);
+    const [rbsInfo, setRbsInfo] = useState(false);
     const [addField, setAddField] = useState([]);
-    const [label, setLabel] = useState();
+    // const [label, setLabel] = useState();
 
     useEffect(() => {
         setAddField(addField)
@@ -31,7 +31,7 @@ export function PartInfo(props) {
     const handlePartType = (event, values) => {
         console.log(values);
         if(values == 'RBS')
-            setRbsinfo(true);
+            setRbsInfo(true);
     }
 
     function handleAddField() {
@@ -39,9 +39,9 @@ export function PartInfo(props) {
         setAddField([...addField, {id: addId}])
     }
 
-    const handleTitleChange = (event) => {
-        setLabel(event.target.value);
-    }
+    // const handleTitleChange = (event) => {
+    //     setLabel(event.target.value);
+    // }
     return (
         <div className="container">
             <div className="d-flex justify-content-center align-items-center h-100">
@@ -51,7 +51,10 @@ export function PartInfo(props) {
                     </FormGroup>
                     <AvGroup>
                         <Label for="title">Title*</Label>
-                        <AvInput type="text" name="title" id="title" required />
+                        <Row className="m-0">
+                        <Col md={11} className="pl-0"><AvInput type="text" name="title" id="title" required /></Col>
+                        <Col md={1} className="p-0"><Button type="button" outline color="primary" onClick={handleAddField}>-</Button></Col>
+                        </Row>
                         <AvFeedback>This field is invalid!</AvFeedback>
                     </AvGroup>
                     <AvGroup>
@@ -114,18 +117,15 @@ export function PartInfo(props) {
                         <Label for="rbs">RBS Strength</Label>
                         <AvInput type="text" name="rbs" id="rbs" />
                     </AvGroup>
-                    {addField.map(addfield =><AddField key={addfield.id} label={label} />)}
+                    {addField.map(addfield =><AddField key={addfield.id} />)}
 
-                    <FormGroup row>
-                        <Label for="exampleEmail" md={2}>Label :</Label>
+                        {/* <Label for="exampleEmail" md={2}>Label :</Label>
                         <Col md={7}>
-                            <Input type="text" name="label" placeholder="Type new label" onChange={(e) => handleTitleChange(e)} />
-                        </Col>
-                        <Col md={3}>
+                            <Input type="text" name="label" placeholder="Type new label" />
+                        </Col> */}
+                    <AvGroup className="addBtn">
                         <Button type="button" color="primary" className="mb-4" onClick={handleAddField}>+</Button>
-                        </Col>
-                    </FormGroup>
-                    
+                    </AvGroup>
                     <p>By submitting, you agree to the <a href="">Strandbase Terms of Use.</a></p>
                     <Button type="submit" outline color="primary" className="mt-1">Submit</Button>
                 </AvForm>
