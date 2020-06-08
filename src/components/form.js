@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from "react";
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Button, FormGroup, Label, Input, Col, Row, FontAwesomeIcon} from 'reactstrap';
+import { Button, FormGroup, Label, Input, Col, Row} from 'reactstrap';
 import './form.css';
 
 const AddField = (props) => {
     return(
         <>
             <AvGroup>
-                {/* <Label for="title">{props.label}</Label> */}
-                <AvInput type="text" name="title" id="title" required />
+                <Label for={props.field.label}>{props.field.label}*</Label>
+                <Row className="m-0">
+                <Col md={11} className="pl-0"><AvInput type="text" name={props.field.label} required /></Col>
+                <Col md={1} className="p-0"><Button type="button" outline color="primary" onClick={() => props.handleDelete(props.field.id)}>-</Button></Col>
+                </Row>
                 <AvFeedback>This field is invalid!</AvFeedback>
             </AvGroup>
         </>
@@ -17,8 +20,21 @@ const AddField = (props) => {
 
 export function PartInfo(props) {
     const [rbsInfo, setRbsInfo] = useState(false);
-    const [addField, setAddField] = useState([]);
-    // const [label, setLabel] = useState();
+    const [addField, setAddField] = useState([
+        {
+            id:1,
+            label:"Title"
+        },{
+            id:2,
+            label:"Description"
+        },{
+            id:3,
+            label:"Start"
+        },{
+            id:4,
+            label:"End"
+        }
+    ]);
 
     useEffect(() => {
         setAddField(addField)
@@ -35,13 +51,40 @@ export function PartInfo(props) {
     }
 
     function handleAddField() {
-        let addId = addField.length + 1
-        setAddField([...addField, {id: addId}])
+        let addId = 0;
+        let Label = "";
+        if(addField.length >= 4){
+            alert("You can't add field anymore!");
+        } else {
+            for(let i = 1; i < 5; i++){
+                let found = addField.some(el => el.id === i);
+                if (!found) {
+                    addId = i;
+                    break;
+                }
+            }
+            switch(addId){
+                case 1:
+                    Label="Title";
+                    break;
+                case 2:
+                    Label="Description";
+                    break;
+                case 3:
+                    Label="Start";
+                    break;
+                case 4:
+                    Label="End";
+                    break;
+            }
+            setAddField([...addField, {id: addId, label:Label}])
+        }
     }
 
-    // const handleTitleChange = (event) => {
-    //     setLabel(event.target.value);
-    // }
+    function handleDeleteField(id){
+        let fields = addField.filter(addfield => addfield.id !== id)
+        setAddField(fields)
+    }
     return (
         <div className="container">
             <div className="d-flex justify-content-center align-items-center h-100">
@@ -49,14 +92,7 @@ export function PartInfo(props) {
                     <FormGroup>
                         <h4>Part Info</h4>
                     </FormGroup>
-                    <AvGroup>
-                        <Label for="title">Title*</Label>
-                        <Row className="m-0">
-                        <Col md={11} className="pl-0"><AvInput type="text" name="title" id="title" required /></Col>
-                        <Col md={1} className="p-0"><Button type="button" outline color="primary" onClick={handleAddField}>-</Button></Col>
-                        </Row>
-                        <AvFeedback>This field is invalid!</AvFeedback>
-                    </AvGroup>
+                    {addField.map(data =><AddField key={data.id} field={data} handleDelete={handleDeleteField}/>)}
                     <AvGroup>
                         <Label for="partType">Part type*</Label>
                         <AvField type="select" name="partType" id="partType" onChange={handlePartType} required>
@@ -117,12 +153,6 @@ export function PartInfo(props) {
                         <Label for="rbs">RBS Strength</Label>
                         <AvInput type="text" name="rbs" id="rbs" />
                     </AvGroup>
-                    {addField.map(addfield =><AddField key={addfield.id} />)}
-
-                        {/* <Label for="exampleEmail" md={2}>Label :</Label>
-                        <Col md={7}>
-                            <Input type="text" name="label" placeholder="Type new label" />
-                        </Col> */}
                     <AvGroup className="addBtn">
                         <Button type="button" color="primary" className="mb-4" onClick={handleAddField}>+</Button>
                     </AvGroup>
