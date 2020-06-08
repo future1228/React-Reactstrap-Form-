@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Button, FormGroup, Label, Input, Col, Row} from 'reactstrap';
+import { Button, FormGroup, Label, Col, Row} from 'reactstrap';
 import './form.css';
 
 const AddField = (props) => {
@@ -35,7 +35,6 @@ export function PartInfo(props) {
             label:"End"
         }
     ]);
-
     useEffect(() => {
         setAddField(addField)
     })
@@ -45,9 +44,10 @@ export function PartInfo(props) {
     }
 
     const handlePartType = (event, values) => {
-        console.log(values);
-        if(values == 'RBS')
+        if(values === 'RBS')
             setRbsInfo(true);
+        else
+            setRbsInfo(false);
     }
 
     function handleAddField() {
@@ -76,6 +76,7 @@ export function PartInfo(props) {
                 case 4:
                     Label="End";
                     break;
+                default:
             }
             setAddField([...addField, {id: addId, label:Label}])
         }
